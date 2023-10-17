@@ -1,7 +1,7 @@
 function [k_values] = Latin_Hypercube_Sampling_3d_Tim(bins)
 
 % will fully comment later
-    range_bins = linspace(0, 1, bins+1);
+    range_bins = linspace(0, 50, bins+1);
 
     remaining_bins_k3 = 1:bins;
     remaining_bins_k4 = 1:bins;
