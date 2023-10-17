@@ -74,7 +74,7 @@ hold on
 xlim([0,50])
 ylim([0,2.1])
 ylabel('X_n(T)')
-title("Tolerance Checking the Size of X_n at T=20 for k_3 values")
+title("Parameter Sweep of k_3 and the resulting X_n values at T=20")
 xlabel("k_3")
 xticks(0:2:50)
 legend("Scenario i for n=1","Scenario ii for n=2","Scenario Boundaries",Location="best")
