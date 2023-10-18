@@ -61,9 +61,9 @@ for i=0:2:50
 end
 
 % plotting
-plot(iscondition1k3,iscondition1k4,'b.')
+plot(iscondition1k3,iscondition1k4,'bo')
 hold on
-plot(iscondition2k3,iscondition2k4,'r.')
+plot(iscondition2k3,iscondition2k4,'rx')
 xlim([0,51])
 ylim([0,51])
 title("(k_3,k_4) Paired Parameter Sweep")
