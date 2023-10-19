@@ -9,3 +9,10 @@ foodAdded = 300;
 gridWidth = 200;
 simulationLength = 400;
 Task4Simulation(parasiteMaxAge, foodRotChance, foodAdded, gridWidth, simulationLength);
+
+%% TODO:
+
+% Localised placement
+
+
+
