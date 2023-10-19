@@ -4,7 +4,7 @@
 function [output] = Task4Simulation(parasiteMaxAge, foodRotChance, foodAdded, gridSize, simulationLength)
 % Default Values
 	arguments
-		parasiteMaxAge = 10;
+		parasiteMaxAge = 5;
 		foodRotChance = 0.01;
 		foodAdded = 300;
 		gridSize = 200;
@@ -45,6 +45,9 @@ function [output] = Task4Simulation(parasiteMaxAge, foodRotChance, foodAdded, gr
 	fig = figure;
 	subplot(2,2,1);
 	imagesc(simGrid1); % Parasites are represented by -1 and food by 1.
+	[parasiteYPos, parasiteXPos] = find(simGrid1 == -1);
+	Age = zeros(length(parasiteXPos), 1); % Create a matrix of ages for each parasite
+	[foodYPos, foodXPos] = find(simGrid1 == 1);
 
 	subplot(2,2,2);
 	imagesc(simGrid2);
@@ -58,27 +61,27 @@ function [output] = Task4Simulation(parasiteMaxAge, foodRotChance, foodAdded, gr
 	currentFrame = getframe(fig);
 	writeVideo(vidObj, currentFrame);
 
-	for i = 1:simulationLength
 
-		[parasiteYPos, parasiteXPos] = find(simGrid1 == -1);
-		Age = zeros(length(parasiteXPos), 1); % Create a matrix of ages for each parasite
-		[foodYPos, foodXPos] = find(simGrid1 == 1);
+	
+	for i = 1:simulationLength
+		
 		r = rand(length(parasiteXPos),1);
 		
 		% Check if parasite is death age => kill parasite
-		isDead = Age == parasiteMaxAge;
-		Age = Age(~isDead); % Keep only values that aren't dead
-		parasiteYPos = parasiteYPos(~isDead);
-		parasiteXPos = parasiteXPos(~isDead);
-				
+		isAlive = Age < parasiteMaxAge;
+		Age = Age(isAlive); % Keep only values that aren't dead
+		parasiteYPos = parasiteYPos(isAlive);
+		parasiteXPos = parasiteXPos(isAlive);
+		
 		%% For each Parasite, iterate through and update positions
+		tic
 		for j = 1:length(parasiteXPos) % for each parasite
 			
 			
 			% Check direction parasite wants to move for obstructions,
 			% boundaries and food.
-			if r(j) < 0.25 && parasiteXPos(j) ~= 200 && parasiteGrid(parasiteYPos(j), parasiteXPos(j) + 1) ~= -1 % Move East
-				if parasiteGrid(parasiteYPos(j), parasiteXPos(j) + 1) ~= 1 % If food in position to move to
+			if r(j) < 0.25 && parasiteXPos(j) ~= 200 && simGrid1(parasiteYPos(j), parasiteXPos(j) + 1) ~= -1 % Move East
+				if simGrid1(parasiteYPos(j), parasiteXPos(j) + 1) == 1 % If food in position to move to
 					Age = [Age; Age(j)]; % Add new age to end of age array to represent old parasite
 					Age(j) = 0; % Reset age of parasite in current position to represent birth
 					parasiteXPos = [parasiteXPos; (parasiteXPos(j) + 1)]; % Add an x value for a old parasite in new pos
@@ -86,8 +89,8 @@ function [output] = Task4Simulation(parasiteMaxAge, foodRotChance, foodAdded, gr
 					continue
 				end
 				parasiteXPos(j) = parasiteXPos(j) + 1; % If no food and no obstruction then move to new position
-			elseif r(j) < 0.5 && parasiteXPos(j) ~= 1 && parasiteGrid(parasiteYPos(j), parasiteXPos(j) - 1) ~= -1 % Move West
-				if parasiteGrid(parasiteYPos(j), parasiteXPos(j) - 1) ~= 1 % If food in position to move to
+			elseif r(j) < 0.5 && parasiteXPos(j) ~= 1 && simGrid1(parasiteYPos(j), parasiteXPos(j) - 1) ~= -1 % Move West
+				if simGrid1(parasiteYPos(j), parasiteXPos(j) - 1) == 1 % If food in position to move to
 					Age = [Age; Age(j)]; % Add new age to end of age array to represent old parasite
 					Age(j) = 0; % Reset age of parasite in current position to represent birth
 					parasiteXPos = [parasiteXPos; (parasiteXPos(j) - 1)]; % Add an x value for a old parasite in new pos
@@ -95,8 +98,8 @@ function [output] = Task4Simulation(parasiteMaxAge, foodRotChance, foodAdded, gr
 					continue
 				end
 				parasiteXPos(j) = parasiteXPos(j) - 1;
-			elseif r(j) < 0.75 && parasiteYPos(j) ~= 1 && parasiteGrid(parasiteYPos(j) - 1, parasiteXPos(j)) ~= -1 % Move North
-				if parasiteGrid(parasiteYPos(j) - 1, parasiteXPos(j)) ~= 1 % If food in position to move to
+			elseif r(j) < 0.75 && parasiteYPos(j) ~= 1 && simGrid1(parasiteYPos(j) - 1, parasiteXPos(j)) ~= -1 % Move North
+				if simGrid1(parasiteYPos(j) - 1, parasiteXPos(j)) == 1 % If food in position to move to
 					Age = [Age; Age(j)]; % Add new age to end of age array to represent old parasite
 					Age(j) = 0; % Reset age of parasite in current position to represent birth
 					parasiteXPos = [parasiteXPos; parasiteXPos(j)]; % Add an corresponding x value for old parasite in new pos
@@ -104,8 +107,8 @@ function [output] = Task4Simulation(parasiteMaxAge, foodRotChance, foodAdded, gr
 					continue
 				end
 				parasiteYPos(j) = parasiteYPos(j) - 1;
-			elseif parasiteYPos(j) ~= 200 && parasiteGrid(parasiteYPos(j) + 1, parasiteXPos(j)) ~= -1 % Move South
-				if parasiteGrid(parasiteYPos(j) + 1, parasiteXPos(j)) ~= 1 % If food in position to move to
+			elseif parasiteYPos(j) ~= 200 && simGrid1(parasiteYPos(j) + 1, parasiteXPos(j)) ~= -1 % Move South
+				if simGrid1(parasiteYPos(j) + 1, parasiteXPos(j)) == 1 % If food in position to move to
 					Age = [Age; Age(j)]; % Add new age to end of age array to represent old parasite
 					Age(j) = 0; % Reset age of parasite in current position to represent birth
 					parasiteXPos = [parasiteXPos; parasiteXPos(j)]; % Add an corresponding x value for old parasite in new pos
@@ -114,7 +117,10 @@ function [output] = Task4Simulation(parasiteMaxAge, foodRotChance, foodAdded, gr
 				end
 				parasiteYPos(j) = parasiteYPos(j) + 1;
 			end
+
 		end
+		toc
+		
 		%% For each piece of food, determine if rotten and deleted
 		isRotten = rand(length(foodXPos), 1) < foodRotChance;
 		foodXPos = foodXPos(~isRotten); % Delete xPos of all food that isRotten
@@ -132,7 +138,8 @@ function [output] = Task4Simulation(parasiteMaxAge, foodRotChance, foodAdded, gr
 
 		currentFrame = getframe(fig);
 		writeVideo(vidObj, currentFrame);
-
+		
+		Age = Age + 1;
 	end
 	close(vidObj);
 end
