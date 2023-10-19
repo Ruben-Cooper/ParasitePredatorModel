@@ -1,6 +1,6 @@
 function [X1, X2] = simulate_system(k3, k4, T)
 
-    % Define the differential equations, reminder: k1, k2 & k3 are constant
+    % Define the differential equations, reminder: k1, k2 & k5 are constant
     ode_system = @(t, y) [y(1)*y(2) - 2*y(1); 
                           k3 - k4*y(2) - 3*y(1)];
 
