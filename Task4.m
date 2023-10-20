@@ -12,5 +12,5 @@ Task4Simulation(parasiteMaxAge, foodRotChance, foodAdded, gridWidth, simulationL
 %% Scenario 2
 parasiteMaxAge = 10;
 foodRotChance = 0.01;
-foodAdded = 100;
+foodAdded = 300;
 Task4Simulation(parasiteMaxAge, foodRotChance, foodAdded, gridWidth, simulationLength, "Scenario 2");
