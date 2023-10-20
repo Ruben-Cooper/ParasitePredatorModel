@@ -1,5 +1,5 @@
 % the amount of samples
-samples = 800;
+samples = 4000;
 
 % LHS values
 lhs_results = Latin_Hypercube_Sampling_3d_Tim(samples);
@@ -100,44 +100,30 @@ end
 
 % plotting as a 3d scatter plot 
 figure
+hold on
 scatter3(lhs_c1(:,1),lhs_c1(:,2),lhs_c1(:,3))
-xlabel('k3')
-ylabel('k4')
-zlabel('k5')
-title('3D LHS values that meet condition 1')
-xlim([0 50])
-ylim([0 50])
-zlim([0 50])
-
-figure
 scatter3(lhs_c2(:,1),lhs_c2(:,2),lhs_c2(:,3))
+grid on
 xlabel('k3')
 ylabel('k4')
 zlabel('k5')
-title('3D LHS values that meet condition 2')
+title('3D LHS values')
 xlim([0 50])
 ylim([0 50])
 zlim([0 50])
 
+
+
 figure
+hold on
 scatter3(orth_c1(:,1),orth_c1(:,2),orth_c1(:,3))
-xlabel('k3')
-ylabel('k4')
-zlabel('k5')
-title('Orthogonal sampler values that meet condition 1')
-xlim([0 50])
-ylim([0 50])
-zlim([0 50])
-
-figure
 scatter3(orth_c2(:,1),orth_c2(:,2),orth_c2(:,3))
+grid on
 xlabel('k3')
 ylabel('k4')
 zlabel('k5')
-title('Orthogonal sampler values that meet condition 2')
+title('Orthogonal sampler values')
 xlim([0 50])
 ylim([0 50])
 zlim([0 50])
-
-
 
