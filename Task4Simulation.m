@@ -1,7 +1,7 @@
 %% Function Description:
 % TODO: this
 
-function Task4Simulation(parasiteMaxAge, foodRotChance, foodAdded, gridSize, simulationLength, title)
+function Task4Simulation(parasiteMaxAge, foodRotChance, foodAdded, gridSize, simulationLength, simTitle)
 % Default Values I was using for testing the function
 	arguments
 		parasiteMaxAge = 10;
@@ -9,7 +9,7 @@ function Task4Simulation(parasiteMaxAge, foodRotChance, foodAdded, gridSize, sim
 		foodAdded = 300;
 		gridSize = 200;
 		simulationLength = 400;
-		title = "Simulation"
+		simTitle = "Simulation"
 	end
 
 	A = rand(gridSize);
@@ -45,7 +45,7 @@ function Task4Simulation(parasiteMaxAge, foodRotChance, foodAdded, gridSize, sim
 	simGrid4 = foodGrid - parasiteGrid;
 
 	%% Initialise VideoWriter
-	vidObj = VideoWriter(title);
+	vidObj = VideoWriter(simTitle);
 	vidObj.FrameRate = 10;
 	open(vidObj);
 
@@ -57,40 +57,45 @@ function Task4Simulation(parasiteMaxAge, foodRotChance, foodAdded, gridSize, sim
 	pbaspect([1 1 1]);
 
 	%% Initial plotting of simGrid to show placement of parasites and food
+	sgtitle("Task 4 Simulation")
 	subplot(2,2,1);
 	imagesc(simGrid1); % Parasites are represented by -1 and food by 1.
+	title("10% Density and Random Placement")
 	[parasiteYPos1, parasiteXPos1] = find(simGrid1 == -1);
 	numParasites1 = length(parasiteXPos1);
 	parasiteXPos1 = [parasiteXPos1; NaN((maxPopulation - numParasites1), 1)];
 	parasiteYPos1 = [parasiteYPos1; NaN((maxPopulation - numParasites1), 1)];
-	Age1 = zeros(maxPopulation, 1); % Create a matrix of ages for each parasite
+	% Age1 = zeros(maxPopulation, 1); % Create a matrix of ages for each parasite
 	[foodYPos1, foodXPos1] = find(simGrid1 == 1);
 
 	subplot(2,2,2);
 	imagesc(simGrid2);
+	title("40% Density and Random Placement")
 	[parasiteYPos2, parasiteXPos2] = find(simGrid2 == -1);
 	numParasites2 = length(parasiteXPos2);
 	parasiteXPos2 = [parasiteXPos2; NaN((maxPopulation - numParasites2), 1)];
 	parasiteYPos2 = [parasiteYPos2; NaN((maxPopulation - numParasites2), 1)];
-	Age2 = zeros(maxPopulation, 1); % Create a matrix of ages for each parasite
+	% Age2 = zeros(maxPopulation, 1); % Create a matrix of ages for each parasite
 	[foodYPos2, foodXPos2] = find(simGrid2 == 1);
 
 	subplot(2,2,3);
 	imagesc(simGrid3);
+		title("10% Density and Localised Placement")
 	[parasiteYPos3, parasiteXPos3] = find(simGrid3 == -1);
 	numParasites3 = length(parasiteXPos3);
 	parasiteXPos3 = [parasiteXPos3; NaN((maxPopulation - numParasites3), 1)];
 	parasiteYPos3 = [parasiteYPos3; NaN((maxPopulation - numParasites3), 1)];
-	Age3 = zeros(maxPopulation, 1); % Create a matrix of ages for each parasite
+	% Age3 = zeros(maxPopulation, 1); % Create a matrix of ages for each parasite
 	[foodYPos3, foodXPos3] = find(simGrid3 == 1);
 
 	subplot(2,2,4);
 	imagesc(simGrid4);
+		title("40% Density and Localised Placement")
 	[parasiteYPos4, parasiteXPos4] = find(simGrid4 == -1);
 	numParasites4 = length(parasiteXPos4);
 	parasiteXPos4 = [parasiteXPos4; NaN((maxPopulation - numParasites4), 1)];
 	parasiteYPos4 = [parasiteYPos4; NaN((maxPopulation - numParasites4), 1)];
-	Age4 = zeros(maxPopulation, 1); % Create a matrix of ages for each parasite
+	% Age4 = zeros(maxPopulation, 1); % Create a matrix of ages for each parasite
 	[foodYPos4, foodXPos4] = find(simGrid4 == 1);
 
 	currentFrame = getframe(fig);
@@ -402,6 +407,8 @@ function Task4Simulation(parasiteMaxAge, foodRotChance, foodAdded, gridSize, sim
 		subplot(2, 2, 1);
 		imagesc(simGridAdjusted);
 		end
+			title("10% Density and Random Placement")
+
 
 		%% Subplot 2
 		% simGrid2 = zeros(size(simGrid2)); % Clear simGrid ready for inputting new parasite and food locations
@@ -425,6 +432,7 @@ function Task4Simulation(parasiteMaxAge, foodRotChance, foodAdded, gridSize, sim
 		subplot(2, 2, 2);
 		imagesc(simGridAdjusted);
 		end
+	title("40% Density and Random Placement")
 
 		%% Subplot 3
 		% simGrid3 = zeros(size(simGrid3)); % Clear simGrid ready for inputting new parasite and food locations
@@ -447,7 +455,8 @@ function Task4Simulation(parasiteMaxAge, foodRotChance, foodAdded, gridSize, sim
 		subplot(2, 2, 3);
 		imagesc(simGridAdjusted);
 		end
-		
+			title("10% Density and Localised Placement")
+
 		%% Subplot 4
 		% simGrid4 = zeros(size(simGrid4)); % Clear simGrid ready for inputting new parasite and food locations
 		
@@ -468,7 +477,8 @@ function Task4Simulation(parasiteMaxAge, foodRotChance, foodAdded, gridSize, sim
 		subplot(2, 2, 4);
 		imagesc(simGridAdjusted);
 		end
-		
+			title("40% Density and Localised Placement")
+
 		% Dont create a frame if there are no more parasites in any subplot
 		if (numParasites4 + numParasites3 + numParasites2 + numParasites1) == 0
 			continue
@@ -488,5 +498,8 @@ function Task4Simulation(parasiteMaxAge, foodRotChance, foodAdded, gridSize, sim
 		% Age4(~isnan(parasiteXPos4)) = Age4(~isnan(parasiteXPos4)) + 1;
 
 	end
+	figure;
+	plot(numParasites, 'LineWidth', 3);
+	title("Population of Parasites over Time")
 	close(vidObj);
 end
