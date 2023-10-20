@@ -501,5 +501,6 @@ function Task4Simulation(parasiteMaxAge, foodRotChance, foodAdded, gridSize, sim
 	figure;
 	plot(numParasites, 'LineWidth', 3);
 	title("Population of Parasites over Time")
+	legend('10% Density, Random Placement', '40% Density, Random Placement', '10% Density, Localised Placement', '40% Density, Localised Placement')
 	close(vidObj);
 end
