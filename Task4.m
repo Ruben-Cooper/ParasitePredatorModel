@@ -1,18 +1,16 @@
 %% Task 4 - Spatial agent-based implementation
 
-%% Scenario 1
-populationDensity = 0.1;
-placementStrategy = "random";
-parasiteMaxAge = 10;
-foodRotChance = 0.01;
-foodAdded = 300;
 gridWidth = 200;
 simulationLength = 400;
-Task4Simulation(parasiteMaxAge, foodRotChance, foodAdded, gridWidth, simulationLength);
 
-%% TODO:
+%% Scenario 1
+parasiteMaxAge = 3;
+foodRotChance = 0.1;
+foodAdded = 100;
+Task4Simulation(parasiteMaxAge, foodRotChance, foodAdded, gridWidth, simulationLength, "Scenario 1");
 
-% Localised placement
-
-
-
+%% Scenario 2
+parasiteMaxAge = 10;
+foodRotChance = 0.01;
+foodAdded = 100;
+Task4Simulation(parasiteMaxAge, foodRotChance, foodAdded, gridWidth, simulationLength, "Scenario 2");

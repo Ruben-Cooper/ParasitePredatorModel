@@ -1,14 +1,15 @@
 %% Function Description:
 % TODO: this
 
-function Task4Simulation(parasiteMaxAge, foodRotChance, foodAdded, gridSize, simulationLength)
-% Default Values
+function Task4Simulation(parasiteMaxAge, foodRotChance, foodAdded, gridSize, simulationLength, title)
+% Default Values I was using for testing the function
 	arguments
 		parasiteMaxAge = 3;
 		foodRotChance = 0.1;
 		foodAdded = 100;
 		gridSize = 200;
 		simulationLength = 400;
+		title = "Simulation"
 	end
 
 	A = rand(gridSize);
@@ -39,11 +40,16 @@ function Task4Simulation(parasiteMaxAge, foodRotChance, foodAdded, gridSize, sim
 	simGrid4 = foodGrid - parasiteGrid;
 
 	%% Initialise VideoWriter
-	vidObj = VideoWriter('Simulation.avi');
+	vidObj = VideoWriter(title);
 	vidObj.FrameRate = 10;
 	open(vidObj);
 
 	fig = figure;
+		color = [255 127 0; % Orange
+				127 127 127; % Grey
+				0 127 255]./255; % Blue
+	colormap(color);
+
 	subplot(2,2,1);
 	imagesc(simGrid1); % Parasites are represented by -1 and food by 1.
 	[parasiteYPos1, parasiteXPos1] = find(simGrid1 == -1);
@@ -83,8 +89,6 @@ function Task4Simulation(parasiteMaxAge, foodRotChance, foodAdded, gridSize, sim
 	currentFrame = getframe(fig);
 	writeVideo(vidObj, currentFrame);
 
-
-	
 	for i = 1:simulationLength
 		
 		numParasites1 = sum(~isnan(parasiteXPos1));
@@ -157,6 +161,7 @@ function Task4Simulation(parasiteMaxAge, foodRotChance, foodAdded, gridSize, sim
 			end
 
 		end
+
 		
 		%% Subplot 2
 		% Check if parasite is too old => kill parasite
@@ -219,6 +224,7 @@ function Task4Simulation(parasiteMaxAge, foodRotChance, foodAdded, gridSize, sim
 
 		end
 
+
 		% %% Subplot 3
 		% % Check if parasite is too old => kill parasite
 		% isDead = Age3 > parasiteMaxAge;
@@ -280,6 +286,7 @@ function Task4Simulation(parasiteMaxAge, foodRotChance, foodAdded, gridSize, sim
 		% 
 		% end
 
+
 		% %% Subplot 4
 		% Check if parasite is too old => kill parasite
 		% isDead = Age4 > parasiteMaxAge;
@@ -340,6 +347,8 @@ function Task4Simulation(parasiteMaxAge, foodRotChance, foodAdded, gridSize, sim
 		% 	end
 		% 
 		% end
+
+
 		%% For each piece of food, determine if rotten and deleted
 		isRotten = rand(length(foodXPos1), 1) < foodRotChance;
 		foodXPos1 = foodXPos1(~isRotten); % Delete xPos of all food that isRotten
@@ -366,6 +375,11 @@ function Task4Simulation(parasiteMaxAge, foodRotChance, foodAdded, gridSize, sim
 		foodIndices = sub2ind(size(simGrid1), foodYPos1, foodXPos1); % convert subscripts to linear indices
 		simGrid1(foodIndices) = 1; % assign 1 to the elements at the linear indices to represent food
 		
+		% Place food on empty squares within grid
+		emptyGridSquares = find(simGrid1 == 0);
+		newFoodSquares = emptyGridSquares(randperm(length(emptyGridSquares), foodAdded));
+		simGrid1(newFoodSquares) = 1;
+
 		subplot(2, 2, 1);
 		imagesc(simGrid1);
 		
@@ -376,6 +390,10 @@ function Task4Simulation(parasiteMaxAge, foodRotChance, foodAdded, gridSize, sim
 		simGrid2(parasiteIndices) = -1; % assign -1 to the elements at the linear indices to represent parasites
 		foodIndices = sub2ind(size(simGrid2), foodYPos2, foodXPos2); % convert subscripts to linear indices
 		simGrid2(foodIndices) = 1; % assign 1 to the elements at the linear indices to represent food
+		
+		emptyGridSquares = find(simGrid2 == 0);
+		newFoodSquares = emptyGridSquares(randperm(length(emptyGridSquares), foodAdded));
+		simGrid2(newFoodSquares) = 1;
 		
 		subplot(2, 2, 2);
 		imagesc(simGrid2);
@@ -388,6 +406,10 @@ function Task4Simulation(parasiteMaxAge, foodRotChance, foodAdded, gridSize, sim
 		foodIndices = sub2ind(size(simGrid3), foodYPos3, foodXPos3); % convert subscripts to linear indices
 		simGrid3(foodIndices) = 1; % assign 1 to the elements at the linear indices to represent food
 		
+		emptyGridSquares = find(simGrid3 == 0);
+		newFoodSquares = emptyGridSquares(randperm(length(emptyGridSquares), foodAdded));
+		simGrid3(newFoodSquares) = 1;
+
 		subplot(2, 2, 3);
 		imagesc(simGrid3);
 		
@@ -399,6 +421,10 @@ function Task4Simulation(parasiteMaxAge, foodRotChance, foodAdded, gridSize, sim
 		foodIndices = sub2ind(size(simGrid4), foodYPos4, foodXPos4); % convert subscripts to linear indices
 		simGrid4(foodIndices) = 1; % assign 1 to the elements at the linear indices to represent food
 		
+		emptyGridSquares = find(simGrid4 == 0);
+		newFoodSquares = emptyGridSquares(randperm(length(emptyGridSquares), foodAdded));
+		simGrid4(newFoodSquares) = 1;
+
 		subplot(2, 2, 4);
 		imagesc(simGrid4);
 
